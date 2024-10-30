@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/var/www
+    ports:
+      - "9000:9000"
+    networks:
+      - laravel
+
+networks:
+  laravel:
