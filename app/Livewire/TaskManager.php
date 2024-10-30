@@ -36,10 +36,10 @@ class TaskManager extends Component
 
         Task::create(
             [
-            'todo_list_id' => $this->todoListId,
-            'description' => $this->description,
-            'is_public' => $this->isPublic,
-            'status' => $this->status,
+                'todo_list_id' => $this->todoListId,
+                'description' => $this->description,
+                'is_public' => $this->isPublic,
+                'status' => $this->status,
             ]
         );
 

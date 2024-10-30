@@ -33,8 +33,8 @@ class TodoListManager extends Component
 
         Auth::user()->todoLists()->create(
             [
-            'title' => $this->title,
-            'is_public' => $this->isPublic === 'public',
+                'title' => $this->title,
+                'is_public' => $this->isPublic === 'public',
             ]
         );
 
@@ -45,7 +45,7 @@ class TodoListManager extends Component
     public function deleteTodoList($id)
     {
         $todoList = TodoList::find($id);
-    
+
         if ($todoList && $todoList->user_id == Auth::id()) {
             $todoList->delete();
             $this->loadTodoLists();
