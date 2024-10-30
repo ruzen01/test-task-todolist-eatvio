@@ -59,7 +59,8 @@ class LoginForm extends Form
         throw ValidationException::withMessages(
             [
             'form.email' => trans(
-                'auth.throttle', [
+                'auth.throttle',
+                [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
                 ]
@@ -73,6 +74,6 @@ class LoginForm extends Form
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }

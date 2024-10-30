@@ -20,12 +20,13 @@ new #[Layout('layouts.guest')] class extends Component
             ]
         );
 
-        if (! Auth::guard('web')->validate(
-            [
-            'email' => Auth::user()->email,
-            'password' => $this->password,
-            ]
-        )
+        if (
+            ! Auth::guard('web')->validate(
+                [
+                'email' => Auth::user()->email,
+                'password' => $this->password,
+                ]
+            )
         ) {
             throw ValidationException::withMessages(
                 [

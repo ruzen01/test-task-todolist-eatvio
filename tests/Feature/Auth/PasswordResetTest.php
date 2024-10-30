@@ -46,8 +46,10 @@ class PasswordResetTest extends TestCase
             ->call('sendPasswordResetLink');
 
         Notification::assertSentTo(
-            $user, ResetPassword::class, function ($notification) {
-                $response = $this->get('/reset-password/'.$notification->token);
+            $user,
+            ResetPassword::class,
+            function ($notification) {
+                $response = $this->get('/reset-password/' . $notification->token);
 
                 $response
                     ->assertSeeVolt('pages.auth.reset-password')
@@ -69,7 +71,9 @@ class PasswordResetTest extends TestCase
             ->call('sendPasswordResetLink');
 
         Notification::assertSentTo(
-            $user, ResetPassword::class, function ($notification) use ($user) {
+            $user,
+            ResetPassword::class,
+            function ($notification) use ($user) {
                 $component = Volt::test('pages.auth.reset-password', ['token' => $notification->token])
                 ->set('email', $user->email)
                 ->set('password', 'password')

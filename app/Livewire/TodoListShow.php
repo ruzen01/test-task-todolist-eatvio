@@ -6,10 +6,8 @@ use Livewire\Component;
 use App\Models\TodoList;
 use App\Models\Task;
 
-
 class TodoListShow extends Component
 {
-
     public $todoList;
     public $tasks;
     public $newTaskTitle;

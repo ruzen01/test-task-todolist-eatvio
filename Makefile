@@ -1,36 +1,23 @@
-.PHONY: build up down ps logs migrate seed test lint install_composer serve
+.PHONY: copy-env install migrate serve start lint lint-fix
 
-build:
-	docker compose build
+copy-env:
+	@cp .env.example .env
 
-up:
-	docker compose up -d
-
-down:
-	docker compose down
-
-ps:
-	docker compose ps
-
-logs:
-	docker compose logs -f
+install:
+	@composer install
+	@npm install
+	@npm run build
 
 migrate:
-	docker compose exec app php artisan migrate
-
-seed:
-	docker compose exec app php artisan db:seed
-
-composer-install:
-	composer install
-
-lint:
-	./vendor/bin/phpcs --standard=PSR12 app
-
-lint-fix:
-	./vendor/bin/phpcbf --standard=PSR12 app
+	@php artisan migrate
 
 serve:
-	docker compose exec app php artisan serve --host=0.0.0.0 --port=8000
+	@php artisan serve
 
-init: composer-install build up migrate seed serve
+start: copy-env install migrate serve
+
+lint:
+	@./vendor/bin/phpcs --standard=PSR12 app resources routes tests
+
+lint-fix:
+	@./vendor/bin/phpcbf --standard=PSR12 app resources routes tests
