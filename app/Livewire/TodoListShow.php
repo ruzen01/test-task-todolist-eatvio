@@ -21,14 +21,33 @@ class TodoListShow extends Component
     public $editingTaskVisibility;
     public $editingTaskCompletionStatus;
 
+
     public function mount($id)
     {
         $this->todoList = TodoList::findOrFail($id);
-        $this->tasks = $this->todoList->tasks()->get();
+        $this->authorize('view', $this->todoList); // Проверяем права доступа
+    
+        // Фильтруем задачи, оставляя только публичные или принадлежащие текущему пользователю
+        $this->tasks = $this->todoList->tasks()
+            ->where(function ($query) {
+                $query->where('visibility', '=', 'public')
+                      ->orWhere('user_id', '=', auth()->id());
+            })
+            ->get();
     }
+
 
     public function addTask()
     {
+        // Создаем временный экземпляр задачи для проверки политики
+        $task = new Task([
+            'todo_list_id' => $this->todoList->id,
+            'user_id' => auth()->id(),
+        ]);
+    
+        // Авторизация на основе политики
+        $this->authorize('create', $task);
+    
         $this->validate(
             [
                 'newTaskTitle' => 'required|string|max:255',
@@ -36,15 +55,16 @@ class TodoListShow extends Component
                 'newTaskCompletionStatus' => 'in:completed,canceled'
             ]
         );
-
+    
         $task = $this->todoList->tasks()->create(
             [
                 'title' => $this->newTaskTitle,
                 'visibility' => $this->newTaskVisibility,
                 'completion_status' => $this->newTaskCompletionStatus,
+                'user_id' => auth()->id(), // Добавляем ID текущего пользователя
             ]
         );
-
+    
         $this->tasks->push($task);
         $this->reset('newTaskTitle', 'newTaskVisibility', 'newTaskCompletionStatus');
     }

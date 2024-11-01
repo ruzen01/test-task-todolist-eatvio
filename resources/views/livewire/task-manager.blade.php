@@ -17,6 +17,7 @@
         @foreach ($tasks as $task)
             <li>
                 {{ $task->description }} ({{ $task->status }})
+                <p>Автор: {{ $task->user->name }}</p>
                 <button wire:click="deleteTask({{ $task->id }})">Удалить</button>
             </li>
         @endforeach

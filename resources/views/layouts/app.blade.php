@@ -45,7 +45,7 @@
     </main>
 
     <footer>
-        <span>&copy; {{ date('Y') }} {{ config('app.name') }}. Все права защищены.</span>
+        <span>&copy; {{ date('Y') }} {{ config('app.name') }}</span>
     </footer>
 </body>
 </html>
